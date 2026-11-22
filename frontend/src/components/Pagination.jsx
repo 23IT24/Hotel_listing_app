@@ -7,7 +7,7 @@ const Pagination = () => {
   const dispatch = useDispatch();
   const { currentPage, totalPages, searchQuery, minPrice, maxPrice } = useSelector((state) => state.hotels);
 
-  // Total pages 1-ku mela irundha dhaan pagination kaattanum
+ 
   if (totalPages <= 1) return null;
 
   const handlePageChange = (newPage) => {

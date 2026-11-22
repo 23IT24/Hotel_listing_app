@@ -16,7 +16,7 @@ const FilterSidebar = () => {
     e.preventDefault();
     dispatch(setSearchQuery(localSearch));
     dispatch(setPriceFilter({ minPrice: localMin, maxPrice: localMax }));
-    dispatch(setCurrentPage(1)); // First page-ku reset panrom
+    dispatch(setCurrentPage(1)); 
     dispatch(fetchHotels({ search: localSearch, minPrice: localMin, maxPrice: localMax, page: 1 }));
   };
 

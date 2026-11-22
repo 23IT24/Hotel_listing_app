@@ -29,7 +29,7 @@ export const addHotel = createAsyncThunk(
       });
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Hotel create panna mudiyala');
+      return rejectWithValue(err.response?.data?.message || 'Failed to create hotel listing');
     }
   }
 );
@@ -44,7 +44,7 @@ export const updateHotel = createAsyncThunk(
       });
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Hotel update panna mudiyala');
+      return rejectWithValue(err.response?.data?.message || 'Failed to update hotel listing');
     }
   }
 );
@@ -57,7 +57,7 @@ export const deleteHotel = createAsyncThunk(
       await axios.delete(`${API_BASE_URL}/${id}`);
       return id;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Delete panna mudiyala');
+      return rejectWithValue(err.response?.data?.message || 'Failed to delete hotel listing');
     }
   }
 );

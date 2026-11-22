@@ -1,4 +1,4 @@
-/* Container & Layout */
+
 .app-container {
   min-height: 100vh;
   display: flex;
@@ -13,9 +13,9 @@
   flex: 1;
 }
 
-/* --- Classic Human Navbar --- */
+
 .navbar {
-  background-color: #1e3a5f; /* Classic Navy */
+  background-color: #1e3a5f; 
   border-bottom: 2px solid #142942;
   padding: 12px 0;
   position: sticky;
@@ -80,7 +80,7 @@
   color: #212529;
 }
 
-/* --- 2-Column Listing Layout --- */
+
 .page-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -94,7 +94,7 @@
   }
 }
 
-/* --- Filter Sidebar (Real-world Form Controls) --- */
+
 .filter-card {
   background: #ffffff;
   border: 1px solid #dee2e6;
@@ -170,7 +170,7 @@
   box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
 }
 
-/* --- Hotel Card (Classic Practical Booking.com / MMT Style) --- */
+
 .hotels-grid {
   display: flex;
   flex-direction: column;
@@ -230,13 +230,13 @@
 .hotel-title {
   font-size: 17px;
   font-weight: 700;
-  color: #1a56db; /* Natural booking link blue */
+  color: #1a56db; 
 }
 
 .hotel-price {
   font-size: 18px;
   font-weight: 700;
-  color: #198754; /* Clean green for price */
+  color: #198754; 
   white-space: nowrap;
 }
 
@@ -308,7 +308,7 @@
   background: #f8d7da;
 }
 
-/* --- Standard Pagination (Bootstrap-like) --- */
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -343,7 +343,7 @@
   opacity: 0.6;
 }
 
-/* --- Delete Toast Popup --- */
+
 .alert-popup {
   position: fixed;
   bottom: 20px;

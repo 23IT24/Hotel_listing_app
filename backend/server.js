@@ -10,7 +10,7 @@ const PORT = 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-// Upload aana images-ah browser-la paakka static folder serve panrom
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- Multer Setup (Image Upload Storage) ---
@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    // Unique filename create panrom: timestamp + original extension
+   
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + path.extname(file.originalname));
   }
@@ -32,16 +32,16 @@ const storage = multer.diskStorage({
 const upload = multer({ 
   storage: storage,
   fileFilter: (req, file, cb) => {
-    // Only image files allow panrom
+   
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
-      cb(new Error('Images mattum dhaan upload panna mudiyum!'), false);
+      cb(new Error('Only image files are allowed!'), false);
     }
   }
 });
 
-// --- In-Memory Database (Initial Sample Hotels) ---
+
 let hotels = [
   {
     id: 1,
@@ -100,7 +100,7 @@ let nextId = 6;
 // --- API Endpoints ---
 
 // 1. GET ALL HOTELS (With Search, Price Filter & Pagination)
-// Endpoint: GET /api/hotels?search=...&minPrice=...&maxPrice=...&page=1&limit=4
+
 app.get('/api/hotels', (req, res) => {
   let { search, minPrice, maxPrice, page = 1, limit = 4 } = req.query;
   
@@ -137,37 +137,37 @@ app.get('/api/hotels', (req, res) => {
 });
 
 // 2. GET SINGLE HOTEL BY ID (Detail Page-kaga)
-// Endpoint: GET /api/hotels/:id
+
 app.get('/api/hotels/:id', (req, res) => {
   const hotelId = parseInt(req.params.id);
   const hotel = hotels.find(h => h.id === hotelId);
 
   if (!hotel) {
-    return res.status(404).json({ message: "Hotel kedaikkala!" });
+    return res.status(404).json({ message: "Hotel not found!" });
   }
 
   res.json(hotel);
 });
 
 // 3. CREATE HOTEL (With Image Upload)
-// Endpoint: POST /api/hotels
+
 app.post('/api/hotels', upload.single('image'), (req, res) => {
   try {
     const { title, description, latitude, longitude, price } = req.body;
 
-    // Validation
+  
     if (!title || !description || !latitude || !longitude || !price) {
-      return res.status(400).json({ message: "Ellaa fields-um fill pannanum!" });
+      return res.status(400).json({ message: "All fields are required!" });
     }
 
     let image_url = '';
     if (req.file) {
-      // Local server URL
+      
       image_url = `http://localhost:${PORT}/uploads/${req.file.filename}`;
     } else if (req.body.image_url) {
       image_url = req.body.image_url;
     } else {
-      return res.status(400).json({ message: "Oru image upload pannanum!" });
+      return res.status(400).json({ message: "Please uplaod an image file!" });
     }
 
     const newHotel = {
@@ -181,7 +181,7 @@ app.post('/api/hotels', upload.single('image'), (req, res) => {
       created_at: new Date().toISOString()
     };
 
-    hotels.unshift(newHotel); // Top-la add panrom
+    hotels.unshift(newHotel); 
     res.status(201).json(newHotel);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -189,21 +189,21 @@ app.post('/api/hotels', upload.single('image'), (req, res) => {
 });
 
 // 4. UPDATE HOTEL BY ID
-// Endpoint: PUT /api/hotels/:id
+
 app.put('/api/hotels/:id', upload.single('image'), (req, res) => {
   try {
     const hotelId = parseInt(req.params.id);
     const hotelIndex = hotels.findIndex(h => h.id === hotelId);
 
     if (hotelIndex === -1) {
-      return res.status(404).json({ message: "Hotel kedaikkala!" });
+      return res.status(404).json({ message: "Hotel not found" });
     }
 
     const { title, description, latitude, longitude, price } = req.body;
     const existing = hotels[hotelIndex];
 
     let image_url = existing.image_url;
-    // Pudhu image upload panni irundha URL update panrom
+    
     if (req.file) {
       image_url = `http://localhost:${PORT}/uploads/${req.file.filename}`;
     }
@@ -226,18 +226,18 @@ app.put('/api/hotels/:id', upload.single('image'), (req, res) => {
 });
 
 // 5. DELETE HOTEL BY ID
-// Endpoint: DELETE /api/hotels/:id
+
 app.delete('/api/hotels/:id', (req, res) => {
   const hotelId = parseInt(req.params.id);
   const hotelIndex = hotels.findIndex(h => h.id === hotelId);
 
   if (hotelIndex === -1) {
-    return res.status(404).json({ message: "Hotel kedaikkala!" });
+    return res.status(404).json({ message: "Hotel not found" });
   }
 
   const deletedHotel = hotels.splice(hotelIndex, 1)[0];
 
-  // Image server uploads folder-la irundha adhaiyum delete pannuvom
+  
   if (deletedHotel.image_url && deletedHotel.image_url.includes('/uploads/')) {
     const filename = deletedHotel.image_url.split('/uploads/')[1];
     const filePath = path.join(__dirname, 'uploads', filename);
@@ -249,7 +249,7 @@ app.delete('/api/hotels/:id', (req, res) => {
   res.json({ message: "Hotel successfully deleted!", deletedId: hotelId });
 });
 
-// Server Start
+
 app.listen(PORT, () => {
   console.log(`🚀 Backend Server running at http://localhost:${PORT}`);
 });

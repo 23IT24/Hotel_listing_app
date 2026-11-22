@@ -8,10 +8,9 @@ const HotelCard = ({ hotel }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Delete confirm handler
   const handleDelete = (e) => {
-    e.stopPropagation(); // Card click aagaama thadukka
-    const confirmDelete = window.confirm(`"${hotel.title}" hotel-ah delete panna poringala?`);
+    e.stopPropagation();
+    const confirmDelete = window.confirm(`Are you sure you want to delete "${hotel.title}"?`);
     if (confirmDelete) {
       dispatch(deleteHotel(hotel.id));
     }
@@ -28,20 +27,17 @@ const HotelCard = ({ hotel }) => {
       onClick={() => navigate(`/hotel/${hotel.id}`)}
       style={{ cursor: 'pointer' }}
     >
-      {/* 1. Hotel Image with SEO Alt tag */}
       <div className="card-image-wrap">
         <img 
           src={hotel.image_url} 
           alt={`Exterior view of ${hotel.title}`} 
           loading="lazy"
           onError={(e) => {
-            // Broken image vandha fallback placeholder image
             e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=60';
           }}
         />
       </div>
 
-      {/* 2. Hotel Details */}
       <div className="card-body">
         <div>
           <div className="hotel-card-header">
@@ -52,24 +48,21 @@ const HotelCard = ({ hotel }) => {
             </div>
           </div>
 
-          {/* Latitude & Longitude location badge */}
           <div className="hotel-coords">
-            <MapPin size={14} color="#0284c7" />
-            <span>Coords: {Number(hotel.latitude).toFixed(4)}, {Number(hotel.longitude).toFixed(4)}</span>
+            <MapPin size={14} color="#0d6efd" />
+            <span>Coordinates: {Number(hotel.latitude).toFixed(4)}, {Number(hotel.longitude).toFixed(4)}</span>
           </div>
 
-          {/* Description Snippet */}
           <p className="hotel-desc-snippet">
             {hotel.description}
           </p>
         </div>
 
-        {/* 3. Card Footer Actions */}
         <div className="card-footer">
           <span 
             style={{ 
               fontSize: '13px', 
-              color: '#0284c7', 
+              color: '#0d6efd', 
               fontWeight: '600', 
               display: 'inline-flex', 
               alignItems: 'center', 
