@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "title": "Grand Ocean Resort",
+    "description": "Beachfront luxury resort with ocean views, private beach access, and multi-cuisine restaurant.",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "price": 4500,
+    "image_url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=60",
+    "created_at": "2026-11-22T07:08:36.794Z"
+  },
+  {
+    "id": 2,
+    "title": "Mountain Mist Villa",
+    "description": "Peaceful hillside cottage surrounded by tea estates, misty mornings, and trekking trails.",
+    "latitude": 11.4102,
+    "longitude": 76.695,
+    "price": 3200,
+    "image_url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&auto=format&fit=crop&q=60",
+    "created_at": "2026-11-22T07:08:36.795Z"
+  },
+  {
+    "id": 3,
+    "title": "City Center Executive Suites",
+    "description": "Modern business hotel located in the heart of the city with high-speed WiFi and conference halls.",
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "price": 2800,
+    "image_url": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&auto=format&fit=crop&q=60",
+    "created_at": "2026-11-22T07:08:36.795Z"
+  },
+  {
+    "id": 4,
+    "title": "Heritage Palace Residency",
+    "description": "Experience royal luxury with traditional architecture, courtyards, and royal spa amenities.",
+    "latitude": 9.9252,
+    "longitude": 78.1198,
+    "price": 5500,
+    "image_url": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&auto=format&fit=crop&q=60",
+    "created_at": "2026-11-22T07:08:36.795Z"
+  },
+  {
+    "id": 5,
+    "title": "Lakeview Serenity Cottages",
+    "description": "Calm and scenic lakeside wooden cottages ideal for family weekends and campfire nights.",
+    "latitude": 10.2381,
+    "longitude": 77.4892,
+    "price": 3800,
+    "image_url": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&auto=format&fit=crop&q=60",
+    "created_at": "2026-11-22T07:08:36.795Z"
+  }
+]

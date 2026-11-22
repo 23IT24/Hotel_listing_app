@@ -6,14 +6,28 @@ const fs = require('fs');
 
 const app = express();
 const PORT = 5000;
+const DATA_FILE = path.join(__dirname, 'hotels.json');
 
-// Middleware
 app.use(cors());
 app.use(express.json());
-
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- Multer Setup (Image Upload Storage) ---
+// Helper functions to read & save JSON data
+const readHotels = () => {
+  try {
+    if (!fs.existsSync(DATA_FILE)) return [];
+    const data = fs.readFileSync(DATA_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    return [];
+  }
+};
+
+const saveHotels = (hotels) => {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(hotels, null, 2), 'utf8');
+};
+
+// Multer Storage Setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, 'uploads');
@@ -23,7 +37,6 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-   
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + path.extname(file.originalname));
   }
@@ -32,7 +45,6 @@ const storage = multer.diskStorage({
 const upload = multer({ 
   storage: storage,
   fileFilter: (req, file, cb) => {
-   
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
@@ -41,81 +53,20 @@ const upload = multer({
   }
 });
 
-
-let hotels = [
-  {
-    id: 1,
-    title: "Grand Ocean Resort",
-    description: "Beachfront luxury resort with ocean views, private beach access, and multi-cuisine restaurant.",
-    latitude: 13.0827,
-    longitude: 80.2707,
-    price: 4500,
-    image_url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=60",
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 2,
-    title: "Mountain Mist Villa",
-    description: "Peaceful hillside cottage surrounded by tea estates, misty mornings, and trekking trails.",
-    latitude: 11.4102,
-    longitude: 76.6950,
-    price: 3200,
-    image_url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&auto=format&fit=crop&q=60",
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 3,
-    title: "City Center Executive Suites",
-    description: "Modern business hotel located in the heart of the city with high-speed WiFi and conference halls.",
-    latitude: 12.9716,
-    longitude: 77.5946,
-    price: 2800,
-    image_url: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&auto=format&fit=crop&q=60",
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 4,
-    title: "Heritage Palace Residency",
-    description: "Experience royal luxury with traditional architecture, courtyards, and royal spa amenities.",
-    latitude: 9.9252,
-    longitude: 78.1198,
-    price: 5500,
-    image_url: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&auto=format&fit=crop&q=60",
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 5,
-    title: "Lakeview Serenity Cottages",
-    description: "Calm and scenic lakeside wooden cottages ideal for family weekends and campfire nights.",
-    latitude: 10.2381,
-    longitude: 77.4892,
-    price: 3800,
-    image_url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&auto=format&fit=crop&q=60",
-    created_at: new Date().toISOString()
-  }
-];
-
-let nextId = 6;
-
-// --- API Endpoints ---
-
-// 1. GET ALL HOTELS (With Search, Price Filter & Pagination)
-
+// GET /api/hotels (Search, Filter, Pagination)
 app.get('/api/hotels', (req, res) => {
   let { search, minPrice, maxPrice, page = 1, limit = 4 } = req.query;
-  
   page = parseInt(page);
   limit = parseInt(limit);
 
+  let hotels = readHotels();
   let filtered = [...hotels];
 
-  // Title search filter
   if (search && search.trim() !== '') {
     const s = search.toLowerCase();
     filtered = filtered.filter(h => h.title.toLowerCase().includes(s));
   }
 
-  // Price range filter
   if (minPrice !== undefined && minPrice !== '') {
     filtered = filtered.filter(h => Number(h.price) >= Number(minPrice));
   }
@@ -136,42 +87,42 @@ app.get('/api/hotels', (req, res) => {
   });
 });
 
-// 2. GET SINGLE HOTEL BY ID (Detail Page-kaga)
-
+// GET /api/hotels/:id
 app.get('/api/hotels/:id', (req, res) => {
   const hotelId = parseInt(req.params.id);
+  const hotels = readHotels();
   const hotel = hotels.find(h => h.id === hotelId);
 
   if (!hotel) {
-    return res.status(404).json({ message: "Hotel not found!" });
+    return res.status(404).json({ message: 'Hotel not found!' });
   }
 
   res.json(hotel);
 });
 
-// 3. CREATE HOTEL (With Image Upload)
-
+// POST /api/hotels (Add Hotel & save to file)
 app.post('/api/hotels', upload.single('image'), (req, res) => {
   try {
     const { title, description, latitude, longitude, price } = req.body;
 
-  
     if (!title || !description || !latitude || !longitude || !price) {
-      return res.status(400).json({ message: "All fields are required!" });
+      return res.status(400).json({ message: 'All fields are required!' });
     }
 
     let image_url = '';
     if (req.file) {
-      
       image_url = `http://localhost:${PORT}/uploads/${req.file.filename}`;
     } else if (req.body.image_url) {
       image_url = req.body.image_url;
     } else {
-      return res.status(400).json({ message: "Please uplaod an image file!" });
+      return res.status(400).json({ message: 'Please upload an image file!' });
     }
 
+    const hotels = readHotels();
+    const newId = hotels.length > 0 ? Math.max(...hotels.map(h => h.id)) + 1 : 1;
+
     const newHotel = {
-      id: nextId++,
+      id: newId,
       title,
       description,
       latitude: parseFloat(latitude),
@@ -181,29 +132,30 @@ app.post('/api/hotels', upload.single('image'), (req, res) => {
       created_at: new Date().toISOString()
     };
 
-    hotels.unshift(newHotel); 
+    hotels.unshift(newHotel);
+    saveHotels(hotels);
+
     res.status(201).json(newHotel);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// 4. UPDATE HOTEL BY ID
-
+// PUT /api/hotels/:id
 app.put('/api/hotels/:id', upload.single('image'), (req, res) => {
   try {
     const hotelId = parseInt(req.params.id);
+    const hotels = readHotels();
     const hotelIndex = hotels.findIndex(h => h.id === hotelId);
 
     if (hotelIndex === -1) {
-      return res.status(404).json({ message: "Hotel not found" });
+      return res.status(404).json({ message: 'Hotel not found!' });
     }
 
     const { title, description, latitude, longitude, price } = req.body;
     const existing = hotels[hotelIndex];
 
     let image_url = existing.image_url;
-    
     if (req.file) {
       image_url = `http://localhost:${PORT}/uploads/${req.file.filename}`;
     }
@@ -219,25 +171,26 @@ app.put('/api/hotels/:id', upload.single('image'), (req, res) => {
       updated_at: new Date().toISOString()
     };
 
+    saveHotels(hotels);
     res.json(hotels[hotelIndex]);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// 5. DELETE HOTEL BY ID
-
+// DELETE /api/hotels/:id
 app.delete('/api/hotels/:id', (req, res) => {
   const hotelId = parseInt(req.params.id);
+  const hotels = readHotels();
   const hotelIndex = hotels.findIndex(h => h.id === hotelId);
 
   if (hotelIndex === -1) {
-    return res.status(404).json({ message: "Hotel not found" });
+    return res.status(404).json({ message: 'Hotel not found!' });
   }
 
   const deletedHotel = hotels.splice(hotelIndex, 1)[0];
+  saveHotels(hotels);
 
-  
   if (deletedHotel.image_url && deletedHotel.image_url.includes('/uploads/')) {
     const filename = deletedHotel.image_url.split('/uploads/')[1];
     const filePath = path.join(__dirname, 'uploads', filename);
@@ -246,9 +199,8 @@ app.delete('/api/hotels/:id', (req, res) => {
     }
   }
 
-  res.json({ message: "Hotel successfully deleted!", deletedId: hotelId });
+  res.json({ message: 'Hotel successfully deleted!', deletedId: hotelId });
 });
-
 
 app.listen(PORT, () => {
   console.log(`🚀 Backend Server running at http://localhost:${PORT}`);
