@@ -19,14 +19,12 @@ export const fetchHotels = createAsyncThunk(
   }
 );
 
-// 2. Add new hotel (with Image file)
+// 2. Add new hotel
 export const addHotel = createAsyncThunk(
   'hotels/addHotel',
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(API_BASE_URL, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const response = await axios.post(API_BASE_URL, formData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to create hotel listing');
@@ -39,9 +37,7 @@ export const updateHotel = createAsyncThunk(
   'hotels/updateHotel',
   async ({ id, formData }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/${id}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const response = await axios.put(`${API_BASE_URL}/${id}`, formData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to update hotel listing');

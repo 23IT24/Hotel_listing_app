@@ -1,5 +1,15 @@
 [
   {
+    "id": 10,
+    "title": "Taj Exotica Resort",
+    "description": " A 5-star beachfront resort set across 56 acres of manicured Mediterranean-inspired tropical gardens with direct access to Benaulim Beach.",
+    "latitude": 15.2452,
+    "longitude": 73.9248,
+    "price": 5500,
+    "image_url": "http://localhost:5000/uploads/1795449729053-379458097.webp",
+    "created_at": "2026-11-23T16:02:09.090Z"
+  },
+  {
     "id": 9,
     "title": "Kumarakom Lake Resort",
     "description": " Designed around traditional Kerala architecture and restored heritage homesteads along a winding pool and man-made lagoon overlooking Vembanad Lake. Offers luxury pavilion rooms, meandering pool villas, heritage villas (including private pool and lake-view options), houseboats, and presidential suites.",
@@ -17,7 +27,8 @@
     "longitude": 80.273575,
     "price": 3500,
     "image_url": "http://localhost:5000/uploads/1795442893557-156495999.jpg",
-    "created_at": "2026-11-23T14:08:13.576Z"
+    "created_at": "2026-11-23T14:08:13.576Z",
+    "updated_at": "2026-11-23T16:00:04.915Z"
   },
   {
     "id": 7,
@@ -25,9 +36,10 @@
     "description": " Inspired by Imperial Chola architecture, featuring hand-carved pillars, Italian marble, 522 rooms and 78 serviced apartments (or up to 600 keys depending on configuration), and large banquet/convention facilities.",
     "latitude": 13.0105,
     "longitude": 80.2205,
-    "price": 13000,
+    "price": 12500,
     "image_url": "http://localhost:5000/uploads/1795442699748-106167976.webp",
-    "created_at": "2026-11-23T14:04:59.784Z"
+    "created_at": "2026-11-23T14:04:59.784Z",
+    "updated_at": "2026-11-23T15:51:37.154Z"
   },
   {
     "id": 6,
@@ -35,9 +47,10 @@
     "description": "Extremely spacious, with wall to wall windows that capture magnificent ocean and cityscape views. Our accommodation has been designed for business and leisure travellers to Mumbai. With comfortable furnishings, large writing desks, complimentary high-speed Internet for up to four devices and 24-hour butler service. Plus, female butlers for our lady guests.",
     "latitude": 18.927,
     "longitude": 72.8204,
-    "price": 10000,
+    "price": 9500,
     "image_url": "http://localhost:5000/uploads/1795442455049-309554737.avif",
-    "created_at": "2026-11-23T14:00:55.084Z"
+    "created_at": "2026-11-23T14:00:55.084Z",
+    "updated_at": "2026-11-23T15:50:19.945Z"
   },
   {
     "id": 1,
@@ -55,18 +68,9 @@
     "description": "Modern business hotel located in the heart of the city with high-speed WiFi and conference halls.",
     "latitude": 12.9716,
     "longitude": 77.5946,
-    "price": 2800,
+    "price": 3000,
     "image_url": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&auto=format&fit=crop&q=60",
-    "created_at": "2026-11-22T07:08:36.795Z"
-  },
-  {
-    "id": 5,
-    "title": "Lakeview Serenity Cottages",
-    "description": "Calm and scenic lakeside wooden cottages ideal for family weekends and campfire nights.",
-    "latitude": 10.2381,
-    "longitude": 77.4892,
-    "price": 3800,
-    "image_url": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&auto=format&fit=crop&q=60",
-    "created_at": "2026-11-22T07:08:36.795Z"
+    "created_at": "2026-11-22T07:08:36.795Z",
+    "updated_at": "2026-11-23T15:57:43.018Z"
   }
 ]
